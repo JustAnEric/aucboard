@@ -17,7 +17,7 @@ The hardware I am using/have used to make this project possible:
 | Total | | A$69.89 - A$79.89 |
 
 > [!IMPORTANT]
-> For the perspective of Hack Club's Half Life, I have already bought the Common PCM5102A DAC breakout board, Raspberry Pi(R) Zero 2 W and the SSD1306 Monochrome OLED display myself. PCB manufacturing and fabrication costs are going to be receiving the most funding for this project.
+> ***For the perspective of Hack Club's Half Life, I have already bought the Common PCM5102A DAC breakout board, Raspberry Pi(R) Zero 2 W and the SSD1306 Monochrome OLED display myself. PCB manufacturing and fabrication costs are going to be receiving the most funding for this project.***
 
 Tools used:
 
