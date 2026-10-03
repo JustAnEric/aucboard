@@ -6,3 +6,4 @@ pygame
 luma.core
 luma.oled
 gpiozero
+RPi.GPIO

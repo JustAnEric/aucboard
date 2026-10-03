@@ -1,2 +1,3 @@
 firmware/.venv
 firmware/venv
+firmware/__pycache__
