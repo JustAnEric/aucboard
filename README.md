@@ -33,9 +33,14 @@ This section will go into the design process of the board.
 
 The very simplistic schematic of the board is shown below, as it was in V1 (forgetting DAC2, GPIO27, GPIO22, GPIO17, GPIO23 and AGND, I was setting up layouts for an amplifier)
 
+* RPIZ2W1 is the header for the Raspberry Pi Zero 2 W's GPIO connections,
+* GPIO5, GPIO6, GPIO13 and GPIO26 are connected to SW1-SW4,
+* DISP1 is the SSD1306 OLED display module,
+* DAC1 is the 6 pins the DAC provides for outputting a basic line-level signal from its preinstalled AUX jack
+
 [![](images/basic_schematic_v1.png)](images/basic_schematic_v1.png)
 
-And a bit of placement magic onto the PCB, including a ground plane with a 0.2 mm clearance, 0.3 mm thermal relief gap and solid pad connections:
+And a bit of placement magic onto the PCB, including a ground plane with a 0.2 mm clearance, 0.3 mm thermal relief gap and solid pad connections for some shielding:
 
 [![](images/pcb_design_v1.png)](images/pcb_design_v1.png)
 
@@ -50,6 +55,12 @@ So afterwards, the PCB would look like this:
 
 I tried my best to keep the DIN cable routed at the back and short, I wanted minimal crosstalk between the power and signal lines as is typical practice when making boards like this. Constraints required me to use a lot of vias as you can see via the dots on traces (as shown in KiCAD).
 
+#### Flaws with this current design
+
+This PCB has no real amplification to it. So, the line-level signal coming out from the DAC would actually fail to drive basic headphones properly unfortunately. Another design is needed, and note to self for next time:
+* I should fill up as much board space as I can,
+* Maybe put the amplifier next to the display,
+* Optimize my traces a little more by shortening them and planning out better paths, for the amplifier this is especially important....
 
 ## Disclaimers!
 
