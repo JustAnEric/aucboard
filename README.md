@@ -1,5 +1,7 @@
 # Aucboard
 
+<img src="images/pcb_design_3d_v1.png" width="49%" />
+
 > [!NOTE]
 > This is my first ever hardware project involving CAD/PCB design, if there are any issues you can create one: [Create an issue](https://github.com/JustAnEric/aucboard/issues/new)
 
@@ -42,8 +44,13 @@ And a bit of placement magic onto the PCB, including a ground plane with a 0.2 m
 So afterwards, the PCB would look like this:
 
 <div>
-<img src="images/pcb_design_3d_v1.png" style="width: 49%" />
-<img src="images/sm_purple_top_v1.png" style="width: 49%;" />
+<img src="images/sm_purple_top_v1.png" style="width: 49%" />
+<img src="images/sm_purple_bottom_v1.png" style="width: 49%;" />
 </div>
 
 I tried my best to keep the DIN cable routed at the back and short, I wanted minimal crosstalk between the power and signal lines as is typical practice when making boards like this. Constraints required me to use a lot of vias as you can see via the dots on traces (as shown in KiCAD).
+
+
+## Disclaimers!
+
+This is an **ongoing project**, and I have not at all started with software yet. This README right now only shows a basic design, where everything may not be up to date as I revise.
