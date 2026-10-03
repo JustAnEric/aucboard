@@ -6,4 +6,5 @@ pygame
 luma.core
 luma.oled
 gpiozero
-RPi.GPIO
+rpi-lgpio
+RPi.GPIO # for those older Raspberry Pi clients

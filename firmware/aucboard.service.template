@@ -1,0 +1,17 @@
+[Unit]
+Description=Aucboard Main Service
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/aucboard
+User=aucboard
+Group=aucboard
+ExecStart=/opt/aucboard/auc_venv/bin/python /opt/aucboard/main.py
+Restart=on-failure
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
