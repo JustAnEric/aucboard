@@ -2,3 +2,7 @@ sounddevice
 soundfile
 mutagen
 numpy
+pygame
+luma.core
+luma.oled
+gpiozero
