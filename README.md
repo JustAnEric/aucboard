@@ -62,6 +62,13 @@ This PCB has no real amplification to it. So, the line-level signal coming out f
 * Maybe put the amplifier next to the display,
 * Optimize my traces a little more by shortening them and planning out better paths, for the amplifier this is especially important....
 
+
+## Software journaling
+
+The software implemented right now at [firmware/](firmware/) is very basic, and definitely needs greater development. Though, the greatest achievement I'm proud of is how `miniaudio` plays audio so smoothly on constrained devices. Furthermore, I can edit the audio stream *in software* rather than constantly configuring a tool like `pactl` filters.
+
+In the first few commits, `pygame` was implemented due to its simpler `pygame.mixer`, but if I kept it like that, audio quality would've been sacrificed heavily for its simplicity. **Heavy stuttering and jitter** would have occurred for the tests directly because of Python (as the same happens with PyAudio too). Miniaudio simplifies it *way* down for Aucboard.
+
 ## Disclaimers!
 
 This is an **ongoing project**, and I have not at all started with software yet. This README right now only shows a basic design, where everything may not be up to date as I revise.
