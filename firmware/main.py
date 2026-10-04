@@ -6,7 +6,7 @@ from luma.core.interface.serial import spi, i2c
 from luma.core.render import ImageDraw, canvas
 from luma.oled.device import ssd1306, device
 
-import os, pathlib, sys, logging, shutil, time, threading
+import os, pathlib, sys, logging, shutil, time, threading, socket, json
 
 BASE_DIR = pathlib.Path(os.path.dirname(__file__))
 
@@ -104,10 +104,16 @@ def enum_tracks(dir="./music"):
                 print("Found:",fullpath)
                 state.queue.append({ "path": fullpath, "filename": f, "metadata": {} })
 
+def update_boot(sock, percent, status):
+    msg = json.dumps({"percent": percent, "status": status}) + "\n"
+    sock.sendall(msg.encode())
 
-def main(device: device, state: PlayerState):
+def main(device: device, state: PlayerState, boot_s: socket.socket):
     # mainloop
     logger.info("Mainloop started")
+
+    update_boot(boot_s, 100, "Ready!")
+    boot_s.close()
 
     enum_tracks(BASE_DIR / "music")
 
@@ -131,6 +137,10 @@ if __name__ == "__main__":
     logging.basicConfig()
     logger = logging.getLogger("aucboard")
 
+    s = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+    s.connect("/tmp/aucboard_boot.sock")
+    update_boot(s, 25, "Starting audio...")
+
     logger.info("Aucboard is starting...")
 
     if not os.path.exists(BASE_DIR / "music"):
@@ -141,5 +151,6 @@ if __name__ == "__main__":
 
     main(
         DISP1, 
-        state
+        state,
+        s
     )
