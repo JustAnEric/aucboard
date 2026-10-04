@@ -1,7 +1,7 @@
 from tinytag import TinyTag
 from modules.equalizer import EQBand
 
-import dataclasses, time, subprocess, threading, miniaudio, array, numpy as np
+import dataclasses, time, subprocess, threading, miniaudio, array, numpy as np, os
 
 @dataclasses.dataclass
 class TrackState:
@@ -94,13 +94,19 @@ class Player:
             
             lines = result.stdout.splitlines()
             duration = float(lines[-1])
-            print(lines)
-            if lines[-2].strip() == "N/A":
-                bitrate = 0
-            else:
-                bitrate = int(lines[-2].strip())
+
+            quality = lines[0].strip()
+            bitrate_raw = lines[1].strip()
+            duration = float(lines[2].strip())
             
-            quality = lines[-3].strip()
+            # Calculate bitrate manually instead
+            if bitrate_raw == "N/A" or not bitrate_raw.isdigit():
+                file_size_bytes = os.path.getsize(file_path)
+                # Bits per second = bytes * 8 / duration
+                # Kilobits per second (kbps) = bits per second / 1000
+                bitrate = int((file_size_bytes * 8) / (duration * 1000))
+            else:
+                bitrate = int(bitrate_raw)
             
             return duration, bitrate, quality
         except subprocess.CalledProcessError as e:

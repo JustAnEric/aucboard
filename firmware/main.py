@@ -91,9 +91,9 @@ def update_playback(state: PlayerState, delta):
     if not state.playing:
         return
     state.position += delta
-    if state.position >= state.duration:
-        state.advance_track()
-        state.playing = True # set new state
+    #if state.position >= state.duration:
+    #    state.advance_track()
+    #    state.playing = True # set new state
 
 def enum_tracks(dir="./music"):
     for dirp,dirn,filn in os.walk(dir):
