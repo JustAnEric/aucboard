@@ -10,3 +10,5 @@ rpi-lgpio
 RPi.GPIO # for those older Raspberry Pi clients
 miniaudio
 scipy
+quart
+uvicorn

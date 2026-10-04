@@ -10,22 +10,6 @@ import os, pathlib, sys, logging, shutil, time, threading, socket, json
 
 BASE_DIR = pathlib.Path(os.path.dirname(__file__))
 
-#gpio
-TOP_BUTTON = Button("BOARD29")
-RIGHT_BUTTON = Button("BOARD31")
-LEFT_BUTTON = Button("BOARD33")
-BOTTOM_BUTTON = Button("BOARD37")
-
-FLT_DAC = OutputDevice("BOARD13") # or gp 27 
-DEMP_DAC = OutputDevice("BOARD15") # or gp 22
-XSMT_DAC = OutputDevice("BOARD11") # or gp 17 | softmute
-FMT_DAC = OutputDevice("BOARD16") # or gp 23
-
-#display
-DISP1_PORT = 1
-DISP1_ADDRESS = 0x3c
-DISP1 = ssd1306(i2c(port=DISP1_PORT, address=DISP1_ADDRESS))
-
 class PlayerState:
     def __init__(self):
         self.player = Player()
@@ -134,8 +118,15 @@ def main(device: device, state: PlayerState, boot_s: socket.socket):
         time.sleep(0.05)
 
 if __name__ == "__main__":
+    #imports for modules
+    from modules.web import WebApp
+
     logging.basicConfig()
     logger = logging.getLogger("aucboard")
+
+    if not os.path.exists("/tmp/aucboard_boot.sock"):
+        print("Aucboard can only run on boot! You can't run this script directly.")
+        sys.exit(2)
 
     s = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
     s.connect("/tmp/aucboard_boot.sock")
@@ -147,7 +138,26 @@ if __name__ == "__main__":
         logger.warning("Aucboard music directory was not found, creating...")
         os.makedirs(BASE_DIR / "music", exist_ok=True)
 
+    #gpio
+    TOP_BUTTON = Button("BOARD29")
+    RIGHT_BUTTON = Button("BOARD31")
+    LEFT_BUTTON = Button("BOARD33")
+    BOTTOM_BUTTON = Button("BOARD37")
+
+    FLT_DAC = OutputDevice("BOARD13") # or gp 27 
+    DEMP_DAC = OutputDevice("BOARD15") # or gp 22
+    XSMT_DAC = OutputDevice("BOARD11") # or gp 17 | softmute
+    FMT_DAC = OutputDevice("BOARD16") # or gp 23
+
+    #display
+    DISP1_PORT = 1
+    DISP1_ADDRESS = 0x3c
+    DISP1 = ssd1306(i2c(port=DISP1_PORT, address=DISP1_ADDRESS))
+
     state = PlayerState()
+
+    web = WebApp(state)
+    web.run_in_thread()
 
     main(
         DISP1, 

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log in | Aucboard</title>
+    <link rel="stylesheet" href="/static/css/login.css">
+</head>
+<body>
+    <div class="login-card">
+        <h3>Aucboard</h3>
+        <div class="input-group">
+            <label for="username">Username</label>
+            <input type="text" name="username" id="username" placeholder="enter username">
+        </div>
+        <div class="input-group">
+            <label for="password">Password</label>
+            <input type="password" name="password" id="password" placeholder="••••••••">
+        </div>
+        <button id="loginBtn">
+            <span class="btn-text">Connect to Player</span>
+            <div class="spinner"></div>
+        </button>
+        <p id="message" style="font-size: 0.7rem; margin-top: 10px; color: #ff5555;"></p>
+        <small>or better yet, just use the Aucboard app (coming soon for android)</small>
+    </div>
+
+    <script type="module" src="/static/js/login.index.js"></script>
+</body>
+</html>
