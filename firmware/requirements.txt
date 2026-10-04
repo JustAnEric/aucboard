@@ -1,6 +1,6 @@
 sounddevice
 soundfile
-mutagen
+tinytag
 numpy
 pygame
 luma.core
@@ -8,3 +8,5 @@ luma.oled
 gpiozero
 rpi-lgpio
 RPi.GPIO # for those older Raspberry Pi clients
+miniaudio
+scipy

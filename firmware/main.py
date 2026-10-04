@@ -6,7 +6,7 @@ from luma.core.interface.serial import spi, i2c
 from luma.core.render import ImageDraw, canvas
 from luma.oled.device import ssd1306, device
 
-import os, pathlib, sys, logging, shutil
+import os, pathlib, sys, logging, shutil, time, threading
 
 BASE_DIR = pathlib.Path(os.path.dirname(__file__))
 
@@ -26,17 +26,106 @@ DISP1_PORT = 1
 DISP1_ADDRESS = 0x3c
 DISP1 = ssd1306(i2c(port=DISP1_PORT, address=DISP1_ADDRESS))
 
-
 class PlayerState:
     def __init__(self):
-        self.playing = False
         self.player = Player()
+        self.last_tick = 0
+        self.queue = []
+        self.queue_index = 0
 
-def main():
+        self._track_ended = threading.Event()
+
+        @self.player.on_end
+        def on_player_end():
+            print('track ended')
+
+            self._track_ended.set()
+
+    @property
+    def playing(self):
+        return self.player.is_playing
+
+    @playing.setter
+    def playing(self, value: bool):
+        if value == True:
+            self.player.resume()
+        elif value == False:
+            self.player.pause()
+        else:
+            logger.warning("Unintentional set on PlayerState.playing? (not a bool value!)")
+
+    @property
+    def position(self):
+        return self.player.current_track.current_time
+
+    @position.setter
+    def position(self, value: float):
+        self.player.current_track.current_time = value
+
+    @property
+    def duration(self):
+        return self.player.duration
+
+    def advance_track(self):
+        if not self.queue:
+            return
+
+        if self.queue_index == len(self.queue) - 1:
+            self.queue_index = 0
+        else:
+            self.queue_index += 1
+        self.position = 0.0
+        self.playing = True
+
+    def rewind_track(self):
+        if not self.queue:
+            return
+
+        if self.queue_index == 0:
+            self.queue_index = len(self.queue) - 1
+        else:
+            self.queue_index -= 1
+        self.position = 0.0
+
+def update_playback(state: PlayerState, delta):
+    if not state.playing:
+        return
+    state.position += delta
+    if state.position >= state.duration:
+        state.advance_track()
+        state.playing = True # set new state
+
+def enum_tracks(dir="./music"):
+    for dirp,dirn,filn in os.walk(dir):
+        for f in filn:
+            fullpath = os.path.join(dirp, f)
+            froot,fext = os.path.splitext(f)
+            if fext.lower() in [".mp3",".flac",".mp4"]:
+                print("Found:",fullpath)
+                state.queue.append({ "path": fullpath, "filename": f, "metadata": {} })
+
+
+def main(device: device, state: PlayerState):
     # mainloop
     logger.info("Mainloop started")
-    main_canvas = canvas()
-    pass
+
+    enum_tracks(BASE_DIR / "music")
+
+    state.player.play(state.queue[state.queue_index]['path'])
+
+    while True:
+        with canvas(device) as cv:
+            now = time.monotonic()
+            delta = now - state.last_tick
+            state.last_tick = now
+            if state._track_ended.is_set():
+                state._track_ended.clear()
+                state.advance_track()
+                state.player.play(state.queue[state.queue_index]['path'])
+            else:
+                update_playback(state, delta)
+
+        time.sleep(0.05)
 
 if __name__ == "__main__":
     logging.basicConfig()
@@ -44,8 +133,13 @@ if __name__ == "__main__":
 
     logger.info("Aucboard is starting...")
 
-    if not os.path.exists(BASE_DIR / "songs"):
-        logger.warning("Aucboard songs directory was not found, creating...")
-        os.makedirs(BASE_DIR / "songs", exist_ok=True)
+    if not os.path.exists(BASE_DIR / "music"):
+        logger.warning("Aucboard music directory was not found, creating...")
+        os.makedirs(BASE_DIR / "music", exist_ok=True)
 
-    main()
+    state = PlayerState()
+
+    main(
+        DISP1, 
+        state
+    )
