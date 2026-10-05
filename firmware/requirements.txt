@@ -12,3 +12,4 @@ miniaudio
 scipy
 quart
 uvicorn
+psutil
