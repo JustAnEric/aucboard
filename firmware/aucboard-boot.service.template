@@ -1,7 +1,6 @@
 [Unit]
 Description=Aucboard Boot Service
 After=sysinit.target local-fs.target
-Before=basic.target
 
 [Service]
 Type=oneshot
