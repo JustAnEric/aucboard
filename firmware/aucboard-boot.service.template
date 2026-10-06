@@ -1,8 +1,7 @@
 [Unit]
 Description=Aucboard Boot Service
-DefaultDependencies=no
-After=local-fs.target
-Before=sysinit.target basic.target
+After=sysinit.target local-fs.target
+Before=basic.target
 
 [Service]
 Type=oneshot
@@ -11,6 +10,7 @@ Group=root
 WorkingDirectory=/opt/aucboard
 ExecStart=/opt/aucboard/auc_venv/bin/python /opt/aucboard/boot.py
 RemainAfterExit=yes
+TimeoutStartSec=5s
 
 [Install]
 WantedBy=sysinit.target
