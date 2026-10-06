@@ -58,7 +58,8 @@ echo -e "Hardware Configuration File: $CONFIG_FILE\n";
 
 echo "PACKAGE INSTALL (net required)";
 auc_sep;
-
+sudo apt update
+sudo apt upgrade
 sudo apt install build-essential liblgpio-dev python3-dev swig python3-pip python3-pil libfreetype6-dev libjpeg-dev libopenjp2-7 libtiff6 curl wget ffmpeg -y
 
 auc_sep;
