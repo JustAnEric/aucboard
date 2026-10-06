@@ -1,6 +1,6 @@
 [Unit]
 Description=Aucboard Boot Service
-After=sysinit.target local-fs.target
+After=sysinit.target local-fs.target i2c-dev.target
 
 [Service]
 Type=oneshot
