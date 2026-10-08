@@ -1,6 +1,7 @@
 # Aucboard
 
-<img src="images/pcb_design_3d_v1.png" width="49%" />
+<img src="images/pcb_design_3d_v2.png" width="49%" />
+Revision 2 Aucboard
 
 > [!NOTE]
 > This is my first ever hardware project involving CAD/PCB design, if there are any issues you can create one: [Create an issue](https://github.com/JustAnEric/aucboard/issues/new)
@@ -62,6 +63,17 @@ This PCB has no real amplification to it. So, the line-level signal coming out f
 * Maybe put the amplifier next to the display,
 * Optimize my traces a little more by shortening them and planning out better paths, for the amplifier this is especially important....
 
+### Rev 2
+
+In Revision 2.0, I added an amplifier called the MAX97220AETE+T into the mix and moved some things around. I made the buttons surface-mount so it would be way easier for me to route traces properly across the board. Additionally, there are now less vias, making the board way cleaner. This was done over 10 hours of work approximately, most of me was trying to understand the optimal circuit the PDF datasheet recommended. The amp circuit is effectively the same, but I replaced the input smoothing 0.47uF capacitors with 1uF capacitors to allow a decrease in frequency to ~15Hz rather than ~33Hz minimum.
+
+[![](images/schematic_v2.png)](images/schematic_v2.png)
+
+On the PCB, it received a full re-design, including with how components are placed. Now the DAC is flipped around to the other side and rotated, giving easier access for the amplifier circuit to work properly. There are now two (bigger) ground planes stitched to each other instead of just the one, aiming to provide better thermal spreading, better EMI shielding meaning better signal integrity, and lower impedence ground return paths.
+
+[![](images/pcb_design_v2.png)](images/pcb_design_v2.png)
+
+The routing spaghetti is definitely less, automatically allowing for greater reliability because not everything is very packed like Revision 1.
 
 ## Software journaling
 
