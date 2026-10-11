@@ -10,7 +10,7 @@
 
 | Week | Tier | Hours logged | Entries |
 | --- | --- | --- | --- |
-| Warm-up | Tier 1 | 8h | 1 |
+| Warm-up | Tier 3 | 8h | 1 |
 
 ## Contents
 
